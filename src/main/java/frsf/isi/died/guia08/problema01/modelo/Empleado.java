@@ -1,8 +1,6 @@
 package frsf.isi.died.guia08.problema01.modelo;
 
 
-import static java.time.temporal.ChronoUnit.DAYS;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -42,8 +40,9 @@ public class Empleado {
 		
 
 	}
+	
 	//CREO UN CONSTRUCTOR CON BOOLEAN TEST PARA VERIFICAR LOS METODOS. DEBIDO A QUE INICIALICE LOS CALCULOS
-	// DE PAGO POR TAREA EN LA APPRRHH
+	// DE PAGO POR TAREA EN LA AppRRHH
 	public Empleado(Integer cui, String nomb, Tipo a, Double cost,Boolean test) {
 		super();
 		cuil = cui;
@@ -75,25 +74,7 @@ public class Empleado {
 	}
 	
 	
-	/*	
-		
-		a. Ambos tipos de empleados cobran la duración estimada de la
-		tarea multiplicado por el costo hora.
-		b. Además, cobran un extra si terminan la tarea antes de lo
-		planificado. Para determinar esto se calcula la diferencia en días,
-		entre la fecha de inicio y la fecha final de la tarea, y se multiplica
-		por 4 horas teóricas de trabajo diaria. Entonces si una tarea
-		estaba estimada en 10 horas, y fue finalizada en 2 días, se asume
-		que el empleado tardó 8 horas en resolverla.
-		c. Los empleados efectivos aumentan el valor de su hora en un 20%
-		en aquellas tareas que finalizaron antes.
-		d. Los empleados contratados aumentan el valor de su hora en un
-		30 % para estas tareas. En cambio, si un empleado contratado se
-		demora más de 2 días, en finalizar su tarea respecto a lo que
-		estaba estimado cobrará un 75% de su valor hora.
-		
-			
-			*/
+
 	public Double salario() {
 		Double s=0.0;
 		for(Tarea t: tareasAsignadas) {
@@ -119,7 +100,6 @@ public class Empleado {
 	}
 		
 	public long  tareasAdquiridas() {
-	//	LocalDateTime aux = LocalDate.parse("01-01-1970",formatter).atStartOfDay();
 		return this.tareasAsignadas.stream().filter( a ->  a.getFechaFin()== null).count();
 	}
 	
@@ -127,25 +107,14 @@ public class Empleado {
 		Integer auxiliar = 0;
 		for(Tarea t: tareasAsignadas) {
 			if(t.getFechaFin() == null) {
-				//auxiliar+= ((int) DAYS.between(t.getFechaInicio(),LocalDateTime.now()))*4;
 				auxiliar+= t.getDuracionEstimada();
 			}
 		}
 		return auxiliar;
 		
-//		return  this.tareasAsignadas.stream().filter( a -> a.getFechaFin() == null).mapToInt(a  -> ).sum();
 
 	}
-	/*
-	 * Un empleado puede ser asignado a un proyecto según las siguientes condiciones
-		a. Si es contratado, no puede tener más de 5 tareas asignadas pendientes de finalizar.
-		b. Si es Efectivo, no puede tener asignadas, tareas pendientes de finalizar que sumen más de 15 horas de trabajo estimadas.
-		c. En cualquiera de los dos casos si el empleado no puede ser asignado se retorna un falso.
-		d. En caso de que se quiera asignar un empleado a una tarea que ya tiene otro empleado asignado,
- 			o a una tarea que ya fue finalizada, entonces se lanza una excepción indicando 
- 			que la tarea que se quiere asignar es incorrecta que se seleccione otra tarea.
-	 */
-	
+
 	
 	public Boolean asignarTarea(Tarea t) {
 		if(puedeAsignarTarea.test(t)) {
@@ -174,10 +143,7 @@ public class Empleado {
 		if(noEncontrado== true) 
 			throw new TareaException("El empleado "
 					+this.getNombre()+" no tiene asignado ninguna tarea con el id "+idTarea);
-		
-		// busca la tarea en la lista de tareas asignadas 
-		// si la tarea no existe lanza una excepción
-		// si la tarea existe indica como fecha de inicio la fecha y hora actual
+	
 	}
 	
 	public void finalizar(Integer idTarea) throws TareaException{
@@ -191,9 +157,7 @@ public class Empleado {
 		if(noEncontrado== true) 
 			throw new TareaException("El empleado "
 					+this.getNombre()+" no tiene asignado ninguna tarea con el id "+idTarea);
-		// busca la tarea en la lista de tareas asignadas 
-		// si la tarea no existe lanza una excepción
-		// si la tarea existe indica como fecha de finalizacion la fecha y hora actual
+	
 	}
 
 	public void comenzar(Integer idTarea,String fecha) throws TareaException {
@@ -209,9 +173,6 @@ public class Empleado {
 			throw new TareaException("El empleado "
 					+this.getNombre()+" no tiene asignado ninguna tarea con el id "+idTarea);
 
-		// busca la tarea en la lista de tareas asignadas 
-		// si la tarea no existe lanza una excepción
-		// si la tarea existe indica como fecha de finalizacion la fecha y hora actual
 	}
 	
 	public void finalizar(Integer idTarea,String fecha) throws TareaException {
@@ -226,9 +187,6 @@ public class Empleado {
 		if(noEncontrado== true) 
 			throw new TareaException("El empleado "
 					+this.getNombre()+" no tiene asignado ninguna tarea con el id "+idTarea);
-		// busca la tarea en la lista de tareas asignadas 
-		// si la tarea no existe lanza una excepción
-		// si la tarea existe indica como fecha de finalizacion la fecha y hora actual
 	}
 	
 	

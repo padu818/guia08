@@ -1,13 +1,13 @@
 package frsf.isi.died.guia08.problema01.modelo;
 
-import java.time.LocalDate;
+
 import static java.time.temporal.ChronoUnit.DAYS;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 
 import frsf.isi.died.guia08.problema01.exception.TareaException;
-import frsf.isi.died.guia08.problema01.modelo.Empleado.Tipo;
+
 
 public class Tarea {
 
@@ -32,7 +32,7 @@ public class Tarea {
 		facturada = fact;
 		emp.getTareasAsignadas().add(this);
 	}
-	//sin fecha fin
+	//sin fecha finicio
 	public Tarea(Integer i, String desc, Integer tim, Empleado emp, String fInic,  Boolean fact) {
 		super();
 		id = i;
@@ -63,22 +63,12 @@ public class Tarea {
 	
 	
 	public int cantHorasEmpleadas() {
-//		if(fechaFin.getYear() > fechaInicio.getYear()){
-//			return (((fechaFin.getYear() - fechaInicio.getYear())*365 + fechaFin.getDayOfYear()) - fechaInicio.getDayOfYear())*4;
-//			//si es de otro anio, multiplica la diferencia de anios * 365 y le suma los dias del anio en el que esta. luego le resta 
-//			}
-//		else {
-//			return (((LocalDateTime.now().getYear() - fechaInicio.getYear())*365 + LocalDateTime.now().getDayOfYear()) - fechaInicio.getDayOfYear())*4; 
-//		}
 		return ((int) DAYS.between(fechaInicio,fechaFin))*4;
 	}
 	
 	
 	public int cantHorasTarea() {
-//		if(fechaInicio.getYear() == fechaFin.getYear())
-//			return (fechaFin.getDayOfYear() -fechaInicio.getDayOfYear())*8;
-//		else
-			return ((int) DAYS.between(fechaInicio,fechaFin))*4; 
+		return ((int) DAYS.between(fechaInicio,fechaFin))*4; 
 	}
 	//metodo para simplificar el calculoPagoPorTarea
 	public Double seAtraso() {
@@ -91,13 +81,11 @@ public class Tarea {
 	}
 	
 	public void asignarEmpleado(Empleado e) throws TareaException {
-		//deberia ser un OR, o almenos si ya tiene empleado deberia lanzar una excepcion
 		if(this.getEmpleadoAsignado() != null && this.getFechaFin() != null) 
 			throw new TareaException("Error, la tarea que se quiere asignar es incorrecta. Seleccione otra tarea. "); 
 		else
 			this.empleadoAsignado= e;
-		// si la tarea ya tiene un empleado asignado
-		// y tiene fecha de finalizado debe lanzar una excepcion
+	
 	}
 
 	public Integer getId() {

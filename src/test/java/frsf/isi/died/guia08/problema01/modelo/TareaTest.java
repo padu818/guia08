@@ -21,7 +21,6 @@ public class TareaTest {
 			assertNotNull(t1.getEmpleadoAsignado());
 			assertNotNull(t2.getEmpleadoAsignado());
 		} catch (TareaException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

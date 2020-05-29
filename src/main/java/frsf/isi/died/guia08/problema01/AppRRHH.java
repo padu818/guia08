@@ -2,7 +2,6 @@ package frsf.isi.died.guia08.problema01;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -23,7 +22,8 @@ import frsf.isi.died.guia08.problema01.modelo.Empleado.Tipo;
 import frsf.isi.died.guia08.problema01.modelo.Tarea;
 
 public class AppRRHH {
-
+	
+	
 	private List<Empleado> empleados;
 	// el constructor para generar los test
 	public AppRRHH() {
@@ -35,22 +35,21 @@ public class AppRRHH {
 	public List<Empleado> getEmpleados() {
 		return empleados;
 	}
-
+	
+	
+	//PRUEBO TEST DE LOS ARCHIVOS. YA CREADOS MEDIANTE CREACION DE ARCHIVOS
 	public static void main(String[] args) {
 		//aca pruebo los archivos;
 		AppRRHH pruebas = new AppRRHH();
 		try {
 		pruebas.cargarEmpleadosContratadosCSV("EmpleadoContratado.csv");
 		pruebas.cargarEmpleadosEfectivosCSV("EmpleadoEfectivo.csv");
-		pruebas.cargarTareasCSV("TareasTerminadasNoFacturadas.csv");
+		pruebas.cargarTareasCSV("TareasNoFacturadas.csv");
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (EmpleadoException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -103,9 +102,6 @@ public class AppRRHH {
 			}
 		}
 		else throw new EmpleadoException("No existe ningun empleado con el cuil "+cuil+".");
-		// busca el empleado por cuil en la lista de empleados
-		// con el método buscarEmpleado() actual de esta clase
-		// e invoca al método comenzar tarea
 	}
 	
 	public void terminarTarea(Integer cuil,Integer idTarea) throws EmpleadoException  {
@@ -124,7 +120,6 @@ public class AppRRHH {
 	}
 
 	public void cargarEmpleadosContratadosCSV(String nombreArchivo) throws FileNotFoundException, IOException{
-	//	FileInputStream fis;
 		try(Reader fileReader = new FileReader(nombreArchivo)){
 			try(BufferedReader in = new BufferedReader(fileReader)) {
 				String linea = null;
@@ -134,12 +129,10 @@ public class AppRRHH {
 				}
 			}
 		}
-		// leer datos del archivo
-		// por cada fila invocar a agregarEmpleadoContratado
+
 	}
 
 	public void cargarEmpleadosEfectivosCSV(String nombreArchivo) throws FileNotFoundException, IOException{
-//		FileInputStream fis;
 		try(Reader fileReader = new FileReader(nombreArchivo)){
 			try(BufferedReader in = new BufferedReader(fileReader)) {
 				String linea = null;
@@ -148,9 +141,7 @@ public class AppRRHH {
 					agregarEmpleadoContratado(Integer.valueOf(fila[0]), fila[1], Double.valueOf(fila[2]));
 				}
 			}
-		}
-		// leer datos del archivo
-		// por cada fila invocar a agregarEmpleadoContratado		
+		}	
 	}
 
 	public void cargarTareasCSV(String nombreArchivo) throws FileNotFoundException, IOException,  EmpleadoException {
@@ -160,31 +151,28 @@ public class AppRRHH {
 				while((linea = in.readLine()) != null) {
 					String [] fila = linea.split(";");
 					asignarTarea(Integer.valueOf(fila[5]), Integer.valueOf(fila[0]), fila[1], Integer.valueOf(fila[2]));
-					Optional <Empleado> asignando = buscarEmpleado(e -> e.getCuil().equals(Integer.valueOf(fila[5])));
+//					Optional <Empleado> asignando = buscarEmpleado(e -> e.getCuil().equals(Integer.valueOf(fila[5])));
 					try {
-						asignando.get().comenzar( Integer.valueOf(fila[0]), fila[3]);
-						asignando.get().finalizar( Integer.valueOf(fila[0]), fila[4]);
+						//NO ME PIDE HACER LO HECHO EN "//"
+//						asignando.get().comenzar( Integer.valueOf(fila[0]), fila[3]);
+//						asignando.get().finalizar( Integer.valueOf(fila[0]), fila[4]);
 					} catch (NumberFormatException e1) {
 						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (TareaException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+						e1.printStackTrace();}
+//					 catch (TareaException e1) {
+//						// TODO Auto-generated catch block
+//						e1.printStackTrace();
+//					}
 				}
 			}
 		}
-		// leer datos del archivo
-		// cada fila del archivo tendrá:
-		// cuil del empleado asignado, numero de la taera, descripcion y duración estimada en horas.
+
 	}
-	//queria usar el stream para una busqueda mas compacta. no lo aplique por el tema de que se guarda una lista
-	//de stream <empleados> o stream<tarea> y nose si al aplicar el cast puedo generar algun problema en el archivo
+
 	private void guardarTareasTerminadasCSV() throws IOException {
 		try(Writer fileWriter = new FileWriter("TareasTerminadasNoFacturadas.csv", true)){
 			try(BufferedWriter out = new BufferedWriter(fileWriter)){
 				for(Empleado e: empleados) {
-					//List<Tarea> tareasTerminadas = new ArrayList<Tarea>();
 					for(Tarea t: e.getTareasAsignadas()) {
 						if(t.getFacturada() == false) {
 							
@@ -194,6 +182,7 @@ public class AppRRHH {
 				}
 			}
 		}
+		//SERA NECESARIO GUARDAR LA FECHA? NO LO PIDE PERO SERIA INTERESANTE QUE ESTE PARA EL HISTORIAL
 		// guarda una lista con los datos de la tarea que fueron terminadas
 		// y todavía no fueron facturadas
 		// y el nombre y cuil del empleado que la finalizó en formato CSV 
